@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Remanente: 5 Años</title>
+  <link rel="icon" href="data:,">  <!-- sin ícono: así el navegador no lo pide al servidor -->
+  <style>
+    html, body { margin: 0; height: 100%; background: #000; }
+    body { display: grid; place-items: center; overflow: hidden; }
+    canvas { display: block; background: #04060b; }
+  </style>
+</head>
+<body>
+  <canvas id="juego"></canvas>
+
+  <!-- Red de seguridad: si algún archivo del juego no llegó a cargar (a veces pasa si el
+       servidor está ocupado), la página se recarga sola. Lo intenta hasta 3 veces. -->
+  <script>
+    window.addEventListener('error', (evento) => {
+      if (!evento.target || evento.target.tagName !== 'SCRIPT') return;
+      let intentos = 0;
+      try { intentos = Number(sessionStorage.getItem('remanente.recargas') || 0); } catch (e) { /* nada */ }
+      if (intentos >= 3) return;
+      try { sessionStorage.setItem('remanente.recargas', String(intentos + 1)); } catch (e) { /* nada */ }
+      setTimeout(() => location.reload(), 300);
+    }, true);
+    window.addEventListener('load', () => {
+      try { sessionStorage.removeItem('remanente.recargas'); } catch (e) { /* nada */ }
+    });
+  </script>
+
+  <!-- El orden importa: cada archivo puede usar lo de los anteriores.
+       main.js va al final porque usa todo lo de los demás. -->
+  <script src="js/entrada.js"></script>
+  <script src="js/fisica.js"></script>
+  <script src="js/camara.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/musica.js"></script>
+  <script src="js/sprites.js"></script>
+  <script src="js/animacion.js"></script>
+  <script src="js/efectos.js"></script>
+  <!-- Los niveles -->
+  <script src="js/niveles.js"></script>
+  <script src="js/niveles-acto1.js"></script>
+  <script src="js/niveles-acto2.js"></script>
+  <script src="js/niveles-acto3.js"></script>
+  <script src="js/niveles-tren.js"></script>
+  <script src="js/escenario.js"></script>
+  <!-- Los personajes -->
+  <script src="js/movimiento.js"></script>
+  <script src="js/combate.js"></script>
+  <script src="js/jax.js"></script>
+  <script src="js/elena.js"></script>
+  <!-- Los enemigos y los jefes -->
+  <script src="js/enemigos.js"></script>
+  <script src="js/enemigos-acto1.js"></script>
+  <script src="js/enemigos-acto2.js"></script>
+  <script src="js/enemigos-acto3.js"></script>
+  <script src="js/jefes.js"></script>
+  <script src="js/jefes-vane.js"></script>
+  <script src="js/jefes-bosque.js"></script>
+  <script src="js/jefes-citadel.js"></script>
+  <script src="js/jefes-kira.js"></script>
+  <!-- Disparos, trampas y reglas especiales de los niveles -->
+  <script src="js/proyectiles.js"></script>
+  <script src="js/trampas.js"></script>
+  <script src="js/mecanicas.js"></script>
+  <script src="js/ia.js"></script>
+  <!-- Guardado, pantallas e historia -->
+  <script src="js/guardado.js"></script>
+  <script src="js/hud.js"></script>
+  <script src="js/historia.js"></script>
+  <script src="js/taller.js"></script>
+  <script src="js/arma.js"></script>
+  <script src="js/pantallas.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
